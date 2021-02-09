@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Udacity</string>
     <string name="btn_name">roll</string>
+    <string name="name">do</string>
 </resources>
