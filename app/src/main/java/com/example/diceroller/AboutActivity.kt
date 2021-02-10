@@ -1,10 +1,12 @@
 package com.example.diceroller
 
+import android.app.Activity
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.diceroller.databinding.ActivityAboutBinding
 
@@ -29,6 +31,11 @@ class AboutActivity : AppCompatActivity() {
                 invalidateAll()
                 nicknameEdit.text.clear()
                 imm.hideSoftInputFromWindow(nameText.windowToken, 0)
+            }
+
+            backButton.setOnClickListener {
+                val h:Helper = Helper()
+                h.navigate(it.context)
             }
         }
     }
