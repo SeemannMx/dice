@@ -18,6 +18,7 @@ package com.example.android.dessertpusher
 
 import android.content.ActivityNotFoundException
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -70,6 +71,13 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
         Timber.i("onCreate")
         timer = DessertTimer(this.lifecycle)
 
+        // restore data from state
+        if(savedInstanceState != null) {
+            revenue = savedInstanceState.getInt("K_Rev")
+            dessertsSold = savedInstanceState.getInt("K_Sold")
+            timer.secondsCount = savedInstanceState.getInt("K_Time")
+        }
+
         // Use Data Binding to get reference to the views
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
@@ -89,6 +97,20 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
         super.onStart()
         // Timber.i("onStart")
         // timer.startTimer()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        outState.putInt("K_Rev", revenue)
+        outState.putInt("K_Sold", dessertsSold)
+        outState.putInt("K_Time", timer.secondsCount)
+
+        Timber.i("onSaved")
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        Timber.i("onRestore")
     }
 
     override fun onResume() {
