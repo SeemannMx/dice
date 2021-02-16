@@ -66,6 +66,12 @@ class GameFragment : Fragment() {
             binding.scoreText.text = newScore.toString()
         })
 
+        viewModel.eventGameFinish.observe(viewLifecycleOwner, Observer { isFinished ->
+            if(isFinished)
+                gameFinished()
+                viewModel.onGameFinishComplete()
+        })
+
         binding.correctButton.setOnClickListener {
             viewModel.onCorrect()
         }
@@ -76,12 +82,11 @@ class GameFragment : Fragment() {
 
     }
 
-    /**
-     * Called when the game is finished
-     */
+    /** Called when the game is finished **/
     private fun gameFinished() {
-        val action = GameFragmentDirections.actionGameToScore()
-        /// action.setScore(viewModel.score.value ?: 0)
-        findNavController(this).navigate(action)
+        Log.i(this.javaClass.name, "Game Finished")
+        // val action = GameFragmentDirections.actionGameToScore()
+        // action.setScore(viewModel.score.value ?: 0)
+        // findNavController(this).navigate(action)
     }
 }
