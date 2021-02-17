@@ -53,6 +53,8 @@ class GameFragment : Fragment() {
                 false
         )
 
+        binding.gameViewModel = viewModel
+
         viewModel.countdown.observe(viewLifecycleOwner, Observer { newTime ->
             binding.timerText.text = newTime
         })
@@ -70,14 +72,16 @@ class GameFragment : Fragment() {
                 viewModel.onGameFinishComplete()
         })
 
+        /* see xml for clicklistener setup via lambda expression
         binding.correctButton.setOnClickListener {
             viewModel.onCorrect()
         }
         binding.skipButton.setOnClickListener {
             viewModel.onSkip()
         }
-        return binding.root
+         */
 
+        return binding.root
     }
 
     /** Called when the game is finished **/

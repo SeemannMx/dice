@@ -53,12 +53,15 @@ class ScoreFragment : Fragment() {
 
         // Get args using by navArgs property delegate
         val scoreFragmentArgs by navArgs<ScoreFragmentArgs>()
+        binding.scoreText.text = scoreFragmentArgs.score.toString()
 
         viewModelFactory = ScoreViewModelFactory(scoreFragmentArgs.score)
         scoreViewModel = ViewModelProvider(this, viewModelFactory).get(ScoreViewModel::class.java)
 
-        binding.scoreText.text = scoreFragmentArgs.score.toString()
-        binding.playAgainButton.setOnClickListener { scoreViewModel.onDoPlayAgain() }
+        binding.scoreViewModel = scoreViewModel
+
+        // see xml for clicklisterner setup
+        // binding.playAgainButton.setOnClickListener { scoreViewModel.onDoPlayAgain() }
 
         scoreViewModel.score.observe(viewLifecycleOwner, Observer { newScore ->
             binding.youScoredText.text = newScore.toString()
