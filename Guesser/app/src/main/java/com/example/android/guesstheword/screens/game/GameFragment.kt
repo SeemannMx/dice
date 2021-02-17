@@ -56,9 +56,10 @@ class GameFragment : Fragment() {
         binding.lifecycleOwner = this
 
         viewModel.eventGameFinish.observe(viewLifecycleOwner, Observer { isFinished ->
-            if(isFinished)
+            if (isFinished) {
                 gameFinished()
-            viewModel.onGameFinishComplete()
+                viewModel.onGameFinishComplete()
+            }
         })
 
         /* see xml set up for text setup and note lifecycle owner above

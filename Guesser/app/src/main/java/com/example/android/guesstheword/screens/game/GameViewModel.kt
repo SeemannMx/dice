@@ -5,6 +5,7 @@ import android.text.format.DateUtils
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 
 class GameViewModel : ViewModel() {
@@ -13,13 +14,20 @@ class GameViewModel : ViewModel() {
         // These represent different important times
         // This is when the game is over
         const val DONE = 0L
+
         // This is the number of milliseconds in a second
         const val ONE_SECOND = 1000L
+
         // This is the total time of the game 60000L
         const val COUNTDOWN_TIME = 10000L
     }
 
     private val timer: CountDownTimer
+
+    // data binding to time in xml / kill observer from fragment
+    val currentTimeString = Transformations.map(countdown) { time ->
+        DateUtils.formatElapsedTime(time)
+    }
 
     // The current word
     private val _word = MutableLiveData<String>()
@@ -36,8 +44,8 @@ class GameViewModel : ViewModel() {
         get() = eventGameFinish
 
     // The current countdown
-    private val _countdown = MutableLiveData<String>()
-    val countdown: LiveData<String>
+    private val _countdown = MutableLiveData<Long>()
+    val countdown: LiveData<Long>
         get() = _countdown
 
     // The list of words - the front of the list is the next word to guess
@@ -53,17 +61,18 @@ class GameViewModel : ViewModel() {
 
             override fun onTick(millisUntilFinished: Long) {
                 Log.i(this.javaClass.name, "onTick")
-                _countdown.value = DateUtils.formatElapsedTime(COUNTDOWN_TIME - ONE_SECOND)
+                _countdown.value = COUNTDOWN_TIME - ONE_SECOND
             }
+
             override fun onFinish() {
                 Log.i(this.javaClass.name, "onFinish")
-                _countdown.value = DateUtils.formatElapsedTime(DONE)
+                _countdown.value = DONE
                 _eventGameFinish.value = true
             }
         }
         timer.start()
 
-        _countdown.value = DateUtils.formatElapsedTime(COUNTDOWN_TIME)
+        _countdown.value = COUNTDOWN_TIME
 
         resetList()
         nextWord()
