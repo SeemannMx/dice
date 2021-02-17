@@ -40,7 +40,6 @@ class GameFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        Log.i(this.javaClass.name, "onCreateView")
         // deprecated
         // viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
         viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
@@ -54,32 +53,35 @@ class GameFragment : Fragment() {
         )
 
         binding.gameViewModel = viewModel
+        binding.lifecycleOwner = this
+
+        viewModel.eventGameFinish.observe(viewLifecycleOwner, Observer { isFinished ->
+            if(isFinished)
+                gameFinished()
+            viewModel.onGameFinishComplete()
+        })
+
+        /* see xml set up for text setup and note lifecycle owner above
+        viewModel.word.observe(viewLifecycleOwner, Observer { newWord ->
+            binding.wordText.text = newWord
+        })
+
+        viewModel.score.observe(viewLifecycleOwner, Observer { newScore ->
+            binding.scoreText.text = newScore.toString()
+        })
 
         viewModel.countdown.observe(viewLifecycleOwner, Observer { newTime ->
             binding.timerText.text = newTime
         })
 
-        viewModel.word.observe(viewLifecycleOwner, Observer { newWord ->
-            binding.wordText.text = newWord
-        })
-        viewModel.score.observe(viewLifecycleOwner, Observer { newScore ->
-            binding.scoreText.text = newScore.toString()
-        })
-
-        viewModel.eventGameFinish.observe(viewLifecycleOwner, Observer { isFinished ->
-            if(isFinished)
-                gameFinished()
-                viewModel.onGameFinishComplete()
-        })
-
-        /* see xml for clicklistener setup via lambda expression
+        // see xml for clicklistener setup via lambda expression
         binding.correctButton.setOnClickListener {
             viewModel.onCorrect()
         }
         binding.skipButton.setOnClickListener {
             viewModel.onSkip()
         }
-         */
+        */
 
         return binding.root
     }
