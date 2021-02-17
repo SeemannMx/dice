@@ -53,11 +53,9 @@ class GameFragment : Fragment() {
                 false
         )
 
-        /*
         viewModel.countdown.observe(viewLifecycleOwner, Observer { newTime ->
             binding.timerText.text = newTime
         })
-         */
 
         viewModel.word.observe(viewLifecycleOwner, Observer { newWord ->
             binding.wordText.text = newWord
@@ -69,7 +67,7 @@ class GameFragment : Fragment() {
         viewModel.eventGameFinish.observe(viewLifecycleOwner, Observer { isFinished ->
             if(isFinished)
                 gameFinished()
-                // viewModel.onGameFinishComplete()
+                viewModel.onGameFinishComplete()
         })
 
         binding.correctButton.setOnClickListener {

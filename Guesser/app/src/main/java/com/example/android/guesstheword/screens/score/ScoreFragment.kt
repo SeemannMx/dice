@@ -22,6 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -52,16 +53,24 @@ class ScoreFragment : Fragment() {
 
         // Get args using by navArgs property delegate
         val scoreFragmentArgs by navArgs<ScoreFragmentArgs>()
-        binding.scoreText.text = scoreFragmentArgs.score.toString()
-        binding.playAgainButton.setOnClickListener { onPlayAgain() }
 
         viewModelFactory = ScoreViewModelFactory(scoreFragmentArgs.score)
-        scoreViewModel = ViewModelProvider(this).get(ScoreViewModel::class.java)
+        scoreViewModel = ViewModelProvider(this, viewModelFactory).get(ScoreViewModel::class.java)
+
+        binding.scoreText.text = scoreFragmentArgs.score.toString()
+        binding.playAgainButton.setOnClickListener { scoreViewModel.onDoPlayAgain() }
+
+        scoreViewModel.score.observe(viewLifecycleOwner, Observer { newScore ->
+            binding.youScoredText.text = newScore.toString()
+        })
+
+        scoreViewModel.eventPlayAgain.observe(viewLifecycleOwner, Observer { doPlayAgain ->
+            if(doPlayAgain) {
+                findNavController().navigate(ScoreFragmentDirections.actionRestart())
+                scoreViewModel.onDoPlayAgainComplete()
+            }
+        })
 
         return binding.root
-    }
-
-    private fun onPlayAgain() {
-        findNavController().navigate(ScoreFragmentDirections.actionRestart())
     }
 }
