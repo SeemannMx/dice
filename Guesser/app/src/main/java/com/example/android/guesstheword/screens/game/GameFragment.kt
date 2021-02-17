@@ -24,14 +24,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.NavHostFragment.findNavController
-import com.example.android.guesstheword.GameViewModel
 import com.example.android.guesstheword.R
 import com.example.android.guesstheword.databinding.GameFragmentBinding
-import timber.log.Timber
 
 /**
  * Fragment where the game is played
@@ -50,7 +45,6 @@ class GameFragment : Fragment() {
         // viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
         viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
 
-
         // Inflate view and obtain an instance of the binding class
         binding = DataBindingUtil.inflate(
                 inflater,
@@ -58,6 +52,12 @@ class GameFragment : Fragment() {
                 container,
                 false
         )
+
+        /*
+        viewModel.countdown.observe(viewLifecycleOwner, Observer { newTime ->
+            binding.timerText.text = newTime
+        })
+         */
 
         viewModel.word.observe(viewLifecycleOwner, Observer { newWord ->
             binding.wordText.text = newWord
@@ -69,7 +69,7 @@ class GameFragment : Fragment() {
         viewModel.eventGameFinish.observe(viewLifecycleOwner, Observer { isFinished ->
             if(isFinished)
                 gameFinished()
-                viewModel.onGameFinishComplete()
+                // viewModel.onGameFinishComplete()
         })
 
         binding.correctButton.setOnClickListener {
