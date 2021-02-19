@@ -22,6 +22,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.AbstractSavedStateViewModelFactory
+import androidx.lifecycle.ViewModelProvider
 import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.databinding.FragmentSleepQualityBinding
 
@@ -32,6 +34,12 @@ import com.example.android.trackmysleepquality.databinding.FragmentSleepQualityB
  * and the database is updated.
  */
 class SleepQualityFragment : Fragment() {
+
+    // private lateinit var viewModelFactory: ScoreViewModelFactory
+    // private lateinit var scoreViewModel: ScoreViewModel
+
+    private lateinit var viewModelFactory: SleepQualityViewModelFactory
+    private lateinit var sleepQualityViewModel: SleepQualityViewModel
 
     /**
      * Called when the Fragment is ready to display content to the screen.
@@ -46,6 +54,10 @@ class SleepQualityFragment : Fragment() {
                 inflater, R.layout.fragment_sleep_quality, container, false)
 
         val application = requireNotNull(this.activity).application
+
+        // viewModelFactory = SleepQualityViewModelFactory(null, application)
+        // sleepQualityViewModel = ViewModelProvider(this, viewModelFactory).get(SleepQualityViewModel::class.java)
+        // binding.scoreViewModel = scoreViewModel
 
         return binding.root
     }
